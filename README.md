@@ -12,7 +12,7 @@ java -jar VIVOPhotoLinksGenerator.jar /mj495/document/photos/input/ /mj495/docum
 ```
 
 Input Folder should contain the person photos in jpg format.
-At the end of jar file execution, output folder should contain the 1) .nt triple files and 2) the file directories that need to be copied in VIVO. Do not copy the whole file folder to file_storage_root/a~n/  but only the subdirectories.
+At the end of jar file execution, output folder should contain the 1) .nt triple file and 2) the file directories that need to be copied in VIVO. Do not copy the whole file folder to file_storage_root/a~n/  but only the subdirectories.
 
 
 ** The default person URI is set to ``` http://scholars.cornell.edu/individual/ ```
