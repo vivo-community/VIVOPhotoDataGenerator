@@ -11,4 +11,4 @@ For example
 java -jar PhotoTriplesGeneratorEntryPoint.jar /mj495/document/photos/input/ /mj495/document/photos/output/ http://vivo.cornell.edu/individual/
 ```
 
-** The default person URI is set to http://scholars.cornell.edu/individual/
+** The default person URI is set to ``` http://scholars.cornell.edu/individual/ ```
