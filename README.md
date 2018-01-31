@@ -1,4 +1,4 @@
-# VIVOPhotoDataGenerator
+# VIVO Photo Data Generator
 This code generate triples and file directory required for person photos to be displayed in VIVO.
 
 Run the jar file as below:
