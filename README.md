@@ -11,4 +11,8 @@ For example
 java -jar VIVOPhotoLinksGenerator.jar /mj495/document/photos/input/ /mj495/document/photos/output/ http://vivo.cornell.edu/individual/
 ```
 
+Input Folder contains the person photos in jpg format.
+Output Folder will contain the 1) .nt triple files and 2) the file directories that need to be copied in VIVO. Do not copy the whole file folder to file_storage_root/a~n/  but only the subdirectories.
+
+
 ** The default person URI is set to ``` http://scholars.cornell.edu/individual/ ```
