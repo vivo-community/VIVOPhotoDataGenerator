@@ -56,7 +56,8 @@ public class PhotoTriplesGenerator {
 			if(file.isDirectory() || file.getName().startsWith(".")) continue;
 			String personURILocalName  = file.getName().substring(0, file.getName().indexOf("."));
 			// if image is processed, there must be a folder in file directory
-			if(personAlreadyProcessed(personURILocalName, new File(outputFolder))){
+			Set<String> outputFolderSubDir = getSubDirectories(outputFolder);
+			if(personAlreadyProcessed(personURILocalName, outputFolderSubDir)){
 				LOGGER.info(personURILocalName + " already processed..continuing!");
 				continue; // already exists
 			}else{
@@ -87,7 +88,7 @@ public class PhotoTriplesGenerator {
 			String localName = person_thumbnailImage_downloadLocation.getLocalName();
 			
 			String path = getPath(localName);
-			File filedir = new File(new File(outputFolder), "file/"+path);
+			File filedir = new File(new File(outputFolder), currentDate+"/"+path);
 			filedir.mkdirs();
 			Path src = FileSystems.getDefault().getPath(inputFolder.getAbsolutePath(), personURILocalName+".jpg");
 			Path tgt = FileSystems.getDefault().getPath(filedir.getAbsolutePath()+"/");
@@ -99,7 +100,7 @@ public class PhotoTriplesGenerator {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}	
-			person_thumbnailImage_downloadLocation.addProperty(directDownloadUrl, "/file/"+localName+"/"+personURILocalName+".jpg");
+			person_thumbnailImage_downloadLocation.addProperty(directDownloadUrl, "/"+currentDate+"/"+localName+"/"+personURILocalName+".jpg");
 			person_thumbnailImage_downloadLocation.addProperty(RDF.type, FileByteStream);
 			person_thumbnailImage_downloadLocation.addProperty(modTime, currentDate);
 
@@ -109,7 +110,7 @@ public class PhotoTriplesGenerator {
 			person_mainImage.addProperty(downloadLocation, person_downloadLocation);
 			String localName2 = person_downloadLocation.getLocalName();
 			String path2 = getPath(localName2);
-			File filedir2 = new File(new File(outputFolder), "file/"+path2);
+			File filedir2 = new File(new File(outputFolder), currentDate+"/"+path2);
 			filedir2.mkdirs();
 			Path src2 = FileSystems.getDefault().getPath(inputFolder.getAbsolutePath(), personURILocalName+".jpg");
 			Path tgt2 = FileSystems.getDefault().getPath(filedir2.getAbsolutePath()+"/");
@@ -120,7 +121,7 @@ public class PhotoTriplesGenerator {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			person_downloadLocation.addProperty(directDownloadUrl, "/file/"+localName+"/"+personURILocalName+".jpg");
+			person_downloadLocation.addProperty(directDownloadUrl, currentDate+"/"+localName+"/"+personURILocalName+".jpg");
 			person_downloadLocation.addProperty(RDF.type, FileByteStream);
 			person_downloadLocation.addProperty(modTime, currentDate);	
 			
@@ -141,22 +142,38 @@ public class PhotoTriplesGenerator {
 		
 	}
 
+	private Set<String> getSubDirectories(String outputFolder) {
+		Set<String> subDirectories = new HashSet<String>();
+		File oFolder = new File(outputFolder);
+		File files[] = oFolder.listFiles();
+		for(File f : files){
+			if(f.isDirectory()){
+				File subDirs[] = f.listFiles();
+				for(File sub2 : subDirs){
+					if(sub2.isDirectory()){
+						subDirectories.add(sub2.getName());
+					}
+				}
+			}
+		}
+		return subDirectories;
+	}
+
 	private String getNewFileName(String filePath){
 		int i = 1;
 		File file = new File(filePath);
 		while(file.exists()){
 			filePath = file.getAbsolutePath();
-			filePath = filePath.substring(0, filePath.lastIndexOf("."))+i+".nt";
+			filePath = filePath.substring(0, filePath.lastIndexOf(getCurrentDate())) +getCurrentDate()+"-"+i+".nt";
 			file = new File(filePath);
 			i++;
 		}
 		return filePath;
 	}
 	
-	private boolean personAlreadyProcessed(String netId, File outputFolder) {
-		String subNetId = netId.substring(0, 3);
-		File folder = new File (outputFolder, "file/"+subNetId);
-		return (folder.exists());
+	private boolean personAlreadyProcessed(String localName, Set<String> outputFolderDirectories) {
+		String subLocalName = localName.substring(0, 3);
+		return (outputFolderDirectories.contains(subLocalName));
 	}
 
 	private String getPath(String localName) {
