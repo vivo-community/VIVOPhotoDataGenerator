@@ -23,7 +23,7 @@ At the end of jar file execution, output folder should contain 1) a new .nt trip
 #### Do not copy the complete folder, but only the subdirectories.
 
 ### Default Person URI
-If no URI is given as Java run parameters, the default person URI is set to ``` http://scholars.cornell.edu/individual/ ```
+If no URI is given as Java run parameter, the default URI namespace is set to ``` http://scholars.cornell.edu/individual/ ```
 
 
 ## How to run jar file periodically
