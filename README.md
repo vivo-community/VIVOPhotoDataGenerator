@@ -1,5 +1,5 @@
 # VIVO Photo Data Generator
-The Java code generate triples and file directories required for person photos to be displayed in VIVO. There is also a self-contained runnable jar file that can be used separately.
+The Java code generate triples and file directories required for person photos to be displayed in VIVO. There is also a self-contained runnable jar file that can be used separately. Though, the code is written to add person photos, it can be used to upload photos for any entity such as, document, presentation, organization etc.
 
 ## Depenedency : 
 Jena Library (https://jena.apache.org/)
