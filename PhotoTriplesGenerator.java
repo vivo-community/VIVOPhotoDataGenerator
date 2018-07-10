@@ -100,7 +100,7 @@ public class PhotoTriplesGenerator {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}	
-			person_thumbnailImage_downloadLocation.addProperty(directDownloadUrl, "/"+currentDate+"/"+localName+"/"+personURILocalName+".jpg");
+			person_thumbnailImage_downloadLocation.addProperty(directDownloadUrl, "/file/"+localName+"/"+personURILocalName+".jpg");
 			person_thumbnailImage_downloadLocation.addProperty(RDF.type, FileByteStream);
 			person_thumbnailImage_downloadLocation.addProperty(modTime, currentDate);
 
@@ -121,7 +121,7 @@ public class PhotoTriplesGenerator {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			person_downloadLocation.addProperty(directDownloadUrl, currentDate+"/"+localName+"/"+personURILocalName+".jpg");
+			person_downloadLocation.addProperty(directDownloadUrl, "/file/"+localName+"/"+personURILocalName+".jpg");
 			person_downloadLocation.addProperty(RDF.type, FileByteStream);
 			person_downloadLocation.addProperty(modTime, currentDate);	
 			
