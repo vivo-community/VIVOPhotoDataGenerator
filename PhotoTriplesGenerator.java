@@ -55,9 +55,7 @@ public class PhotoTriplesGenerator {
 		for(File file: inputFolder.listFiles()){
 			if(file.isDirectory() || file.getName().startsWith(".")) continue;
 			String personURILocalName  = file.getName().substring(0, file.getName().indexOf("."));
-			// if image is processed, there must be a folder in file directory
-			Set<String> outputFolderSubDir = getSubDirectories(outputFolder);
-			if(personAlreadyProcessed(personURILocalName, outputFolderSubDir)){
+			if(personAlreadyProcessed(file.getName(), outputFolder)) {
 				LOGGER.info(personURILocalName + " already processed..continuing!");
 				continue; // already exists
 			}else{
@@ -139,24 +137,7 @@ public class PhotoTriplesGenerator {
 		}else{
 			LOGGER.info("Photo Triples: NO NEW DATA FOUND!!...");
 		}
-		
-	}
 
-	private Set<String> getSubDirectories(String outputFolder) {
-		Set<String> subDirectories = new HashSet<String>();
-		File oFolder = new File(outputFolder);
-		File files[] = oFolder.listFiles();
-		for(File f : files){
-			if(f.isDirectory()){
-				File subDirs[] = f.listFiles();
-				for(File sub2 : subDirs){
-					if(sub2.isDirectory()){
-						subDirectories.add(sub2.getName());
-					}
-				}
-			}
-		}
-		return subDirectories;
 	}
 
 	private String getNewFileName(String filePath){
@@ -170,10 +151,48 @@ public class PhotoTriplesGenerator {
 		}
 		return filePath;
 	}
-	
-	private boolean personAlreadyProcessed(String localName, Set<String> outputFolderDirectories) {
-		String subLocalName = localName.substring(0, 3);
-		return (outputFolderDirectories.contains(subLocalName));
+
+	private boolean personAlreadyProcessed(String imageFileName, String outputFolder) {
+		Set<String> result = searchDirectory(new File(outputFolder), imageFileName);
+		if(result != null && result.size() > 0){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public Set<String> searchDirectory(File directory, String fileNameToSearch) {
+		Set<String> result = null;
+		if (directory.isDirectory()) {
+			result = search(directory, fileNameToSearch);
+		} else {
+			System.err.println("Error: "+directory.getAbsoluteFile() + " is not a directory!");
+		}
+		return result;
+	}
+
+	private Set<String> search(File file, String fileNameToSearch) {
+		Set<String> result = new HashSet<String>();
+		if (file.isDirectory()) {
+			//System.out.println("Searching directory ... " + file.getAbsoluteFile());
+			//do you have permission to read this directory?	
+			if (file.canRead()) {
+				for (File temp : file.listFiles()) {
+					if (temp.isDirectory()) {
+						search(temp, fileNameToSearch);
+					} else {
+						if (fileNameToSearch.equals(temp.getName().toLowerCase())) {			
+							result.add(temp.getAbsoluteFile().toString());
+						}
+
+					}
+				}
+
+			} else {
+				System.out.println(file.getAbsoluteFile() + "Permission Denied");
+			}
+		}
+		return result;
 	}
 
 	private String getPath(String localName) {
